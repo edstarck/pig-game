@@ -105,6 +105,7 @@ body {
 
 .player-current-score {
   font-size: 30px;
+  font-weight: 100;
 }
 
 button {
