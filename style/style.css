@@ -171,3 +171,16 @@ i {
   font-weight: 300;
   color: #eb4d4d;
 }
+
+.final-scores {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 520px;
+  color: #555;
+  font-size: 18px;
+  text-align: center;
+  padding: 10px;
+  width: 160px;
+  outline: none;
+}

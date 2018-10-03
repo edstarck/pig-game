@@ -1,4 +1,5 @@
-var scores, roundScore, activePlayer, gamePlaying;
+var scores, roundScore, activePlayer, gamePlaying, limitPlaing;
+var lastDice = 0;
 
 init();
 
@@ -12,10 +13,15 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
     diceDOM.style.display = 'block';
     diceDOM.src = './image/dice-' + dice + '.png';
 
-    // 3. Update the round score IF the rolled number was NOT a 1
-    if (dice !== 1) {
+    if (dice === 6 && lastDice === 6) {
+      // Plaeyr lose
+      scores[activePlayer] = 0;
+      document.getElementById('score-' + activePlayer).textContent = 0;
+      nextPlayer();
+    } else if (dice !== 1) {
       // Add score
       roundScore += dice;
+
       document.querySelector(
         '#current-' + activePlayer
       ).textContent = roundScore;
@@ -23,6 +29,8 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
       // next player
       nextPlayer();
     }
+
+    lastDice = dice;
   }
 });
 
@@ -31,12 +39,21 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
     // add current score to global score
     scores[activePlayer] += roundScore;
 
+    var input = document.querySelector('#final-scores').value;
+    var winningScore;
+
+    if (input) {
+      winningScore = input;
+    } else {
+      winningScore = 100;
+    }
+
     // Update UI
     document.getElementById('score-' + activePlayer).textContent =
       scores[activePlayer];
 
     // Check if player won the game
-    if (scores[activePlayer] >= 20) {
+    if (scores[activePlayer] >= winningScore) {
       document.getElementById('name-' + activePlayer).textContent = 'Winner!';
       document.querySelector('.dice').style.display = 'none';
       document
@@ -62,8 +79,6 @@ function nextPlayer() {
 
   document.querySelector('.player-0-panel').classList.toggle('active');
   document.querySelector('.player-1-panel').classList.toggle('active');
-
-  document.querySelector('.dice').style.display = 'none';
 }
 
 document.querySelector('.btn-new').addEventListener('click', init);
